@@ -169,7 +169,6 @@ update {
 		Array.Reverse(current.demoTime);
 		vars.convertedIGT = BitConverter.ToUInt32(current.igt, 0);
 		vars.convertedDemoTime = BitConverter.ToUInt32(current.demoTime, 0);
-		print("" + vars.convertedIGT);
 	}
 	//convert float to uint for XLC2
 	else if(game.ProcessName == "RXC2") {
