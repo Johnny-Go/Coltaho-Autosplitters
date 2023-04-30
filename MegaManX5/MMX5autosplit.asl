@@ -138,6 +138,9 @@ init {
 					print("--[Autosplitter] Bizhawk Memory BaseAddress: " + vars.myBaseAddress.ToString("X"));
 					vars.initializeWatchers();
 				}
+			} else if (processName == "dolphin" || processName == "rxc2" || processName == "epsxe" || processName == "x5") {
+				vars.watchers = new MemoryWatcherList();
+				vars.watchersInitialized = true;
 			}
 			
 			if(vars.watchersInitialized) {
@@ -154,19 +157,19 @@ init {
 }
 
 update {
-	if((game.ProcessName == "EmuHawk" || game.ProcessName == "duckstation-qt-x64-ReleaseLTCG" || game.ProcessName == "duckstation-nogui-x64-ReleaseLTCG")
-		&& !vars.watchersInitialized) {
+	if(!vars.watchersInitialized) {
 		return false;
 	}
 
 	vars.watchers.UpdateAll(game);
-	
+
 	//reverse bytes and convert to uint for Dolphin
 	if(game.ProcessName == "Dolphin") {
 		Array.Reverse(current.igt);
 		Array.Reverse(current.demoTime);
 		vars.convertedIGT = BitConverter.ToUInt32(current.igt, 0);
 		vars.convertedDemoTime = BitConverter.ToUInt32(current.demoTime, 0);
+		print("" + vars.convertedIGT);
 	}
 	//convert float to uint for XLC2
 	else if(game.ProcessName == "RXC2") {
